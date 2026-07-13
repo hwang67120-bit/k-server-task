@@ -233,7 +233,7 @@ GET /api/v1/menus/popular
 ## 6. ERD
 
 
-erDiagram
+
     APP_USER ||--|| POINT_ACCOUNT : "포인트 계좌 보유"
     APP_USER ||--o{ POINT_TRANSACTION : "포인트 거래 발생"
     APP_USER ||--o{ COFFEE_ORDER : "주문 생성"
