@@ -1,0 +1,73 @@
+{
+  "info": {
+    "_postman_id": "d4a65357-4fc1-4b6f-9cb1-64cd68d4949f",
+    "name": "K Server Task",
+    "description": "K사 서버 과제 수동 API 검증",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "전체 메뉴 목록 조회",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"200 OK\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const body = pm.response.json();",
+              "",
+              "pm.test(\"menus는 배열이다\", () => {",
+              "    pm.expect(body.menus).to.be.an(\"array\");",
+              "});",
+              "",
+              "pm.test(\"전체 카테고리가 표시된다\", () => {",
+              "    const categories = new Set(body.menus.map(menu => menu.categoryName));",
+              "    [\"커피\", \"케이크\", \"티\", \"에이드\", \"사이드 스낵\"]",
+              "        .forEach(category => pm.expect(categories.has(category)).to.be.true);",
+              "});",
+              "",
+              "pm.test(\"메뉴에 필요한 필드가 있다\", () => {",
+              "    body.menus.forEach(menu => {",
+              "        pm.expect(menu).to.have.all.keys(",
+              "            \"menuId\",",
+              "            \"categoryId\",",
+              "            \"categoryName\",",
+              "            \"name\",",
+              "            \"price\"",
+              "        );",
+              "    });",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/menus",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "menus"
+          ]
+        },
+        "description": "카테고리 표시 순서와 메뉴 ID 순서로 전체 메뉴를 조회한다."
+      },
+      "response": []
+    }
+  ]
+}
