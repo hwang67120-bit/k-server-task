@@ -1,5 +1,7 @@
 package com.example.kservertask.point.entity;
 
+import com.example.kservertask.base.entity.BaseTimeEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -9,13 +11,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 @Getter
 @Entity
 @Table(name = "point_account")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PointAccount {
+public class PointAccount extends BaseTimeEntity {
 
     @Id
     @Column(name = "user_id")
@@ -28,12 +28,12 @@ public class PointAccount {
     @Column(nullable = false)
     private Long version;
 
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
-
-    public PointAccount(Long userId, long balance, Instant updatedAt) {
+    public PointAccount(Long userId, long balance) {
         this.userId = userId;
         this.balance = balance;
-        this.updatedAt = updatedAt;
+    }
+
+    public void addPoint(long amount) {
+        this.balance = Math.addExact(this.balance, amount);
     }
 }

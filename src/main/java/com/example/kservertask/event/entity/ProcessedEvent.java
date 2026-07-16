@@ -1,5 +1,7 @@
 package com.example.kservertask.event.entity;
 
+import com.example.kservertask.base.entity.BaseTimeEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +16,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "processed_event")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProcessedEvent {
+public class ProcessedEvent extends BaseTimeEntity {
 
     @Id
     @Column(name = "event_id", length = 36)

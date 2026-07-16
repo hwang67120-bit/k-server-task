@@ -1,5 +1,7 @@
 package com.example.kservertask.event.entity;
 
+import com.example.kservertask.base.entity.BaseTimeEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -22,7 +24,7 @@ import java.time.Instant;
         )
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OutboxEvent {
+public class OutboxEvent extends BaseTimeEntity {
 
     @Id
     @Column(name = "event_id", length = 36)
@@ -53,9 +55,6 @@ public class OutboxEvent {
     @Column(name = "next_retry_at")
     private Instant nextRetryAt;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
     @Column(name = "sent_at")
     private Instant sentAt;
 
@@ -66,8 +65,7 @@ public class OutboxEvent {
             String payload,
             String status,
             int retryCount,
-            Instant nextRetryAt,
-            Instant createdAt
+            Instant nextRetryAt
     ) {
         this.eventId = eventId;
         this.orderId = orderId;
@@ -76,6 +74,5 @@ public class OutboxEvent {
         this.status = status;
         this.retryCount = retryCount;
         this.nextRetryAt = nextRetryAt;
-        this.createdAt = createdAt;
     }
 }

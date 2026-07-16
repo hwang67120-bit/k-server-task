@@ -1,5 +1,7 @@
 package com.example.kservertask.point.entity;
 
+import com.example.kservertask.base.entity.BaseTimeEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,13 +12,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 @Getter
 @Entity
 @Table(name = "point_history")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PointHistory {
+public class PointHistory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +47,6 @@ public class PointHistory {
     @Column(name = "request_hash", nullable = false, length = 64)
     private String requestHash;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
     public PointHistory(
             Long userId,
             Long orderId,
@@ -58,8 +55,7 @@ public class PointHistory {
             long balanceAfter,
             long versionAfter,
             String idempotencyKey,
-            String requestHash,
-            Instant createdAt
+            String requestHash
     ) {
         this.userId = userId;
         this.orderId = orderId;
@@ -69,6 +65,5 @@ public class PointHistory {
         this.versionAfter = versionAfter;
         this.idempotencyKey = idempotencyKey;
         this.requestHash = requestHash;
-        this.createdAt = createdAt;
     }
 }

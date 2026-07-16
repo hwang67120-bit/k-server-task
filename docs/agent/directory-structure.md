@@ -10,6 +10,7 @@ src/main/java/.../kservertask/
 |   |-- repository/
 |   |-- entity/
 |   |-- request/
+|   |-- result/
 |   `-- response/
 |-- point/
 |   |-- controller/
@@ -29,6 +30,8 @@ src/main/java/.../kservertask/
 |   |-- producer/
 |   |-- consumer/
 |   |-- repository/
+|   `-- entity/
+|-- base/
 |   `-- entity/
 |-- config/
 `-- error/

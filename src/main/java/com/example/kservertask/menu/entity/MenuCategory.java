@@ -1,7 +1,6 @@
-package com.example.kservertask.user.entity;
+package com.example.kservertask.menu.entity;
 
 import com.example.kservertask.base.entity.BaseTimeEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,23 +13,23 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "app_user")
+@Table(name = "menu_category")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AppUser extends BaseTimeEntity {
+public class MenuCategory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "category_id")
+    private Long categoryId;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, unique = true, length = 100)
     private String name;
 
-    @Column(name = "phone_number", nullable = false, unique = true, length = 20)
-    private String phoneNumber;
+    @Column(name = "display_order", nullable = false)
+    private int displayOrder;
 
-    public AppUser(String name, String phoneNumber) {
+    public MenuCategory(String name, int displayOrder) {
         this.name = name;
-        this.phoneNumber = phoneNumber;
+        this.displayOrder = displayOrder;
     }
 }

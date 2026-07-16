@@ -45,6 +45,10 @@ public class MenuController {
 
 - Controller는 HTTP 요청을 받고 Service에 작업을 위임한다.
 - Controller에서 Repository를 직접 호출하거나 비즈니스 정책을 처리하지 않는다.
+- 엔티티의 상태 또는 저장 값을 바꾸는 메서드는 엔티티에 둔다.
+- Service는 요청값과 현재 상태를 검증하고 Repository 호출과 트랜잭션을 조정한다.
+- Service에서 setter나 필드 직접 접근으로 엔티티 값을 바꾸지 않는다.
+- 조회 로직은 엔티티를 변경하지 않고 조회 결과를 조합한다.
 - 검증된 필요가 없다면 Null 안정성 어노테이션이나 선택적인 프레임워크 어노테이션을 추가하지 않는다.
 
 ## 이름 예시

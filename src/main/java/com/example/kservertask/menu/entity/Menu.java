@@ -1,5 +1,6 @@
 package com.example.kservertask.menu.entity;
 
+import com.example.kservertask.base.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,18 +12,19 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 @Getter
 @Entity
 @Table(name = "menu")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Menu {
+public class Menu extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "menu_id")
     private Long menuId;
+
+    @Column(name = "category_id", nullable = false)
+    private Long categoryId;
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -34,12 +36,9 @@ public class Menu {
     @Column(nullable = false)
     private Long version;
 
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
-
-    public Menu(String name, long price, Instant updatedAt) {
+    public Menu(Long categoryId, String name, long price) {
+        this.categoryId = categoryId;
         this.name = name;
         this.price = price;
-        this.updatedAt = updatedAt;
     }
 }
