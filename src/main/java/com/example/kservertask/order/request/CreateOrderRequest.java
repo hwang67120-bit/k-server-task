@@ -17,6 +17,10 @@ public record CreateOrderRequest(
 
         @NotBlank
         @Size(max = 100)
+        String orderToken,
+
+        @NotBlank
+        @Size(max = 100)
         String expectedMenuName,
 
         @NotNull

@@ -36,4 +36,16 @@ public class PointAccount extends BaseTimeEntity {
     public void addPoint(long amount) {
         this.balance = Math.addExact(this.balance, amount);
     }
+
+    public void deductPoint(long amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("차감 포인트는 0보다 커야 합니다.");
+        }
+
+        if (balance < amount) {
+            throw new IllegalStateException("포인트 잔액이 부족합니다.");
+        }
+
+        this.balance -= amount;
+    }
 }
