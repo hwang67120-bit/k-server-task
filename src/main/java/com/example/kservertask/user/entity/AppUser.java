@@ -26,7 +26,11 @@ public class AppUser extends BaseTimeEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
-    public AppUser(String name) {
+    @Column(name = "phone_number", nullable = false, unique = true, length = 20)
+    private String phoneNumber;
+
+    public AppUser(String name, String phoneNumber) {
         this.name = name;
+        this.phoneNumber = phoneNumber;
     }
 }
