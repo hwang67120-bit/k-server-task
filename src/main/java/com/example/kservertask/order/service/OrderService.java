@@ -16,6 +16,7 @@ import com.example.kservertask.order.entity.PaymentStatus;
 import com.example.kservertask.order.repository.OrderRepository;
 import com.example.kservertask.order.request.CreateOrderRequest;
 import com.example.kservertask.order.response.CreateOrderResponse;
+import com.example.kservertask.order.producer.OrderEventProducer;
 import com.example.kservertask.point.entity.PointAccount;
 import com.example.kservertask.point.entity.PointHistory;
 import com.example.kservertask.point.repository.PointAccountRepository;
@@ -26,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final PointAccountRepository pointAccountRepository;
     private final PointHistoryRepository pointHistoryRepository;
+    private final OrderEventProducer orderEventProducer;
 
     /**
      * 기능: 메뉴를 포인트로 결제하고 주문을 생성한다.
@@ -123,6 +127,8 @@ public class OrderService {
                 requestHash
         ));
 
+        publishOrderEventAfterCommit(order.getMenuId(), 1);
+
         return toResponse(order, pointAccount.getBalance());
     }
 
@@ -138,6 +144,33 @@ public class OrderService {
      * 응답값:
      * - CreateOrderResponse: 기존 주문 정보와 현재 잔여 포인트
      */
+    /**
+     * 기능: 주문 트랜잭션 커밋 이후 주문 완료 이벤트를 발행한다. (내부 처리)
+     *
+     * 파라미터:
+     * - productId: 주문한 메뉴 ID
+     * - quantity: 주문 수량
+     *
+     * 요청값:
+     * - productId, quantity: Kafka 이벤트로 전달할 주문 정보
+     *
+     * 응답값:
+     * - 반환값 없음; 트랜잭션 커밋 후 Kafka 이벤트를 발행한다.
+     */
+    private void publishOrderEventAfterCommit(Long productId, int quantity) {
+        if (!TransactionSynchronizationManager.isSynchronizationActive()) {
+            orderEventProducer.sendOrderEvent(productId, quantity);
+            return;
+        }
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                orderEventProducer.sendOrderEvent(productId, quantity);
+            }
+        });
+    }
+
     private CreateOrderResponse toResponse(CoffeeOrder order) {
         PointAccount pointAccount = pointAccountRepository.findById(order.getUserId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.ORDER_FAILED));

@@ -8,6 +8,7 @@ import com.example.kservertask.order.entity.CoffeeOrder;
 import com.example.kservertask.order.entity.OrderStatus;
 import com.example.kservertask.order.entity.PaymentStatus;
 import com.example.kservertask.order.repository.OrderRepository;
+import com.example.kservertask.order.producer.OrderEventProducer;
 import com.example.kservertask.order.request.CreateOrderRequest;
 import com.example.kservertask.order.response.CreateOrderResponse;
 import com.example.kservertask.point.entity.PointAccount;
@@ -46,6 +47,9 @@ class OrderServiceTest {
 
     @Mock
     private PointHistoryRepository pointHistoryRepository;
+
+    @Mock
+    private OrderEventProducer orderEventProducer;
 
     @InjectMocks
     private OrderService orderService;
