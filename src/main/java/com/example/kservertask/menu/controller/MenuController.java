@@ -2,6 +2,7 @@ package com.example.kservertask.menu.controller;
 
 import com.example.kservertask.menu.response.MenuDetailResponse;
 import com.example.kservertask.menu.response.MenuListResponse;
+import com.example.kservertask.menu.response.PopularMenuListResponse;
 import com.example.kservertask.menu.result.MenuDetailResult;
 import com.example.kservertask.menu.result.MenuResult;
 import com.example.kservertask.menu.service.MenuService;
@@ -24,6 +25,11 @@ public class MenuController {
     public MenuListResponse getMenus() {
         List<MenuResult> results = menuService.getMenus();
         return MenuListResponse.from(results);
+    }
+
+    @GetMapping("/popular")
+    public PopularMenuListResponse getPopularMenus() {
+        return menuService.getPopularMenus();
     }
 
     @GetMapping("/{menuId}")
